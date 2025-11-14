@@ -108,6 +108,24 @@ main {
   margin-bottom: 20px;
 }
 
+/* --- NEW: Back Button Style --- */
+.back-btn {
+  background-color: #6c757d; /* Grey */
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 5px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-bottom: 15px;
+}
+
+.back-btn:hover {
+  background-color: #5a6268;
+}
+
 /* --- Styles for Suppliers Page --- */
 .sub-nav-bar {
   display: flex;
@@ -137,7 +155,8 @@ main {
 }
 
 #supplier-list-container,
-#page-content-container {
+#page-content-container,
+#trace-list-container {
   display: flex;
   flex-direction: column;
   gap: 15px;
@@ -168,6 +187,28 @@ main {
   font-size: 1.2em;
   font-weight: bold;
   color: #28a745;
+}
+
+/* --- NEW: Style for Order Inquiry Button --- */
+.detail-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.order-inquiry-btn {
+  background-color: #004a99;
+  color: #ffffff;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  align-self: center;
+}
+.order-inquiry-btn:hover {
+  background-color: #003366;
 }
 
 /* --- Styles for Raw Materials Page --- */
@@ -201,6 +242,16 @@ main {
   color: #dc3545;
 }
 
+/* --- NEW: Clickable card hover effect --- */
+.clickable-card {
+  transition: all 0.3s ease;
+}
+.clickable-card:hover {
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
 /* --- Shared Styles --- */
 .detail-item {
   font-size: 1.1em;
@@ -212,7 +263,7 @@ main {
   width: 100%;
   position: relative;
 }
-.quantity-bar-label {
+.bar-label {
   font-weight: bold;
   margin-bottom: 5px;
   font-size: 0.9em;
@@ -243,6 +294,65 @@ main {
   font-weight: bold;
   font-size: 0.9em;
   text-shadow: 0 0 2px #fff;
+}
+
+/* --- Batch Traceability Styles --- */
+.quantity-bar-fill.route-fill {
+  background-color: #28a745;
+}
+/* --- NEW: Quality Bar Style --- */
+.quantity-bar-fill.quality-fill {
+  background-color: #198754; /* A different, solid green */
+}
+.status-tag {
+  display: inline-block;
+  padding: 5px 12px;
+  border-radius: 15px;
+  font-size: 0.9em;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: #333;
+}
+.status-packing {
+  background-color: #fff3cd;
+  color: #664d03;
+}
+.status-loading {
+  background-color: #cff4fc;
+  color: #055160;
+}
+.status-in-transit {
+  background-color: #d1e7dd;
+  color: #0f5132;
+}
+
+/* --- Expiry Dashboard Styles --- */
+.alert-expiring-soon {
+  border-left: 10px solid #ffc107;
+  background-color: #fffcf2;
+}
+.alert-expired {
+  border-left: 10px solid #dc3545;
+  background-color: #fff8f8;
+  animation: pulse 1.8s infinite;
+}
+.forecast-days.expired {
+  color: #dc3545;
+  font-weight: bold;
+}
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  }
+  50% {
+    transform: scale(1.01);
+    box-shadow: 0 4px 10px rgba(220, 53, 69, 0.1);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  }
 }
 
 /* --- Modal Styles (Unchanged) --- */
@@ -328,103 +438,4 @@ main {
     opacity: 1;
     transform: translateY(0);
   }
-}
-/* --- NEW: Expiry Dashboard Alert Styles --- */
-.alert-expiring-soon {
-  border-left: 10px solid #ffc107; /* Amber/Yellow border */
-  background-color: #fffcf2;
-}
-
-.alert-expired {
-  border-left: 10px solid #dc3545; /* Red border */
-  background-color: #fff8f8;
-  animation: pulse 1.8s infinite; /* Make expired items pulse */
-}
-
-/* For the "Expired" text */
-.forecast-days.expired {
-  color: #dc3545;
-  font-weight: bold;
-}
-
-/* Re-using the pulse animation from the previous dashboard */
-@keyframes pulse {
-  0% {
-    transform: scale(1);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  }
-  50% {
-    transform: scale(1.01);
-    box-shadow: 0 4px 10px rgba(220, 53, 69, 0.1);
-  }
-  100% {
-    transform: scale(1);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  }
-/* --- NEW: Batch Traceability Styles --- */
-
-}/* New color for the route progress bar */
-
-.quantity-bar-fill.route-fill {
-  background-color: #28a745; /* Green */
-}
-
-/* New styles for status tags */
-.status-tag {
-  display: inline-block;
-  padding: 5px 12px;
-  border-radius: 15px;
-  font-size: 0.9em;
-  font-weight: bold;
-  text-transform: uppercase;
-  color: #333;
-}
-
-.status-packing {
-  background-color: #fff3cd; /* Yellow */
-  color: #664d03;
-}
-
-.status-loading {
-  background-color: #cff4fc; /* Blue */
-  color: #055160;
-}
-
-.status-in-transit {
-  background-color: #d1e7dd; /* Green */
-  color: #0f5132;
-}
-
-/* Renamed from .quantity-bar-label to be more generic */
-.bar-label {
-  font-weight: bold;
-  margin-bottom: 5px;
-  font-size: 0.9em;
-  color: #555;
-}
-/* --- NEW: Styles for Order Inquiry Button --- */
-
-/* This new group will stack the price and delivery time */
-.detail-group {
-  display: flex;
-  flex-direction: column;
-  gap: 5px; /* Adds a small gap between price and delivery */
-}
-
-/* New button style */
-.order-inquiry-btn {
-  background-color: #004a99; /* Use brand color */
-  color: #ffffff;
-  border: none;
-  padding: 10px 15px; /* Slightly smaller than login */
-  border-radius: 5px;
-  font-size: 14px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  align-self: center; /* Vertically align with the detail group */
-}
-
-.order-inquiry-btn:hover {
-  background-color: #003366; /* Darker hover */
 }

@@ -94,14 +94,79 @@ function renderExpiryDashboardPage() {
   renderExpiryList();
 }
 
-// --- PAGE RENDERER: Raw Materials (Unchanged) ---
+// --- PAGE RENDERER: Raw Materials (UPDATED) ---
 function renderRawMaterialsPage() {
   const mainContent = document.getElementById('main-content');
   mainContent.innerHTML = `
     <h2 class="page-title">Raw Materials Inventory</h2>
     <div id="page-content-container"></div>
   `;
+
+  // NEW: Add listener for card clicks
+  const container = mainContent.querySelector('#page-content-container');
+  container.addEventListener('click', (event) => {
+    const clickedCard = event.target.closest('.clickable-card');
+    // Check if a card was clicked and it's on the main list (not a batch detail)
+    if (clickedCard && clickedCard.hasAttribute('data-material-name')) {
+      const materialName = clickedCard.getAttribute('data-material-name');
+      renderBatchDetailPage(materialName);
+    }
+  });
+
   renderRawMaterialsList();
+}
+
+// --- NEW: PAGE RENDERER: Batch Detail Page ---
+function renderBatchDetailPage(materialName) {
+  const mainContent = document.getElementById('main-content');
+  // Find the batches for the selected material
+  const batches = rawMaterialBatches[materialName] || [];
+
+  let batchCardsHTML = '';
+  if (batches.length > 0) {
+    batches.forEach((batch) => {
+      batchCardsHTML += `
+        <div class="inventory-card"> <h3>Batch: ${batch.batchId}</h3>
+          <div class="card-details">
+            <div class="detail-item"><strong>Delivered:</strong> ${
+              batch.delivered
+            }</div>
+            <div class="detail-item"><strong>Expires:</strong> ${
+              batch.expiry
+            }</div>
+            <div class="detail-item"><strong>Quantity:</strong> ${batch.quantity.toLocaleString()} kg</div>
+          </div>
+          <div class="quantity-bar-container">
+            <p class="bar-label">Quality Score:</p>
+            <div class="quantity-bar-bg">
+              <div class="quantity-bar-fill quality-fill" style="width: ${
+                batch.qualityScore
+              }%;"></div>
+            </div>
+            <div class="quantity-bar-text">${batch.qualityScore} / 100</div>
+          </div>
+        </div>
+      `;
+    });
+  } else {
+    batchCardsHTML = '<p>No batch information available for this material.</p>';
+  }
+
+  // Set the HTML for the whole page
+  mainContent.innerHTML = `
+    <button id="back-to-raw-materials" class="back-btn">← Back to All Materials</button>
+    <h2 class="page-title">Batches for ${materialName}</h2>
+    <div id="page-content-container">
+      ${batchCardsHTML}
+    </div>
+  `;
+
+  // Add listener for the new back button
+  document
+    .getElementById('back-to-raw-materials')
+    .addEventListener('click', () => {
+      renderRawMaterialsPage();
+    });
 }
 
 // --- PAGE RENDERER: Batch Traceability (Unchanged) ---
@@ -114,8 +179,7 @@ function renderBatchTraceabilityPage() {
       <button id="tab-potato-batch" class="nav-tab">Potato</button>
       <button id="tab-maize-batch" class="nav-tab">Maize</button>
     </div>
-    <div id="trace-list-container">
-      </div>
+    <div id="trace-list-container"></div>
   `;
 
   const navTabs = mainContent.querySelectorAll('.nav-tab');
@@ -139,7 +203,7 @@ function renderBatchTraceabilityPage() {
   renderBatchList(wheatBatches);
 }
 
-// --- PAGE RENDERER: Suppliers (UPDATED) ---
+// --- PAGE RENDERER: Suppliers (Unchanged) ---
 function renderSuppliersPage() {
   const mainContent = document.getElementById('main-content');
   mainContent.innerHTML = `
@@ -152,7 +216,6 @@ function renderSuppliersPage() {
     <div id="supplier-list-container"></div>
   `;
 
-  // Add listeners for sub-nav tabs
   const navTabs = mainContent.querySelectorAll('.nav-tab');
   navTabs.forEach((tab) => {
     tab.addEventListener('click', () => {
@@ -172,25 +235,83 @@ function renderSuppliersPage() {
     });
   });
 
-  // --- NEW: Add one listener for all inquiry buttons ---
   const listContainer = mainContent.querySelector('#supplier-list-container');
   listContainer.addEventListener('click', (event) => {
-    // Check if the clicked element is our button
     if (event.target.classList.contains('order-inquiry-btn')) {
-      // Find the supplier name from the card's h3 tag
       const supplierName = event.target
         .closest('.supplier-item')
         .querySelector('h3').textContent;
       alert(`Order inquiry for ${supplierName} would open here.`);
     }
   });
-  // --- END NEW CODE ---
 
-  // Load the default (Wheat) list
   renderSupplierList(wheatSupplierData);
 }
 
 // --- ALL DATA ---
+
+// --- NEW: DATA: Raw Material Batches ---
+const rawMaterialBatches = {
+  'Wheat Flour': [
+    {
+      batchId: 'B-1001-A',
+      delivered: '2025-11-01',
+      expiry: '2026-05-01',
+      quantity: 20000,
+      qualityScore: 95,
+    },
+    {
+      batchId: 'B-1008-C',
+      delivered: '2025-11-10',
+      expiry: '2026-05-10',
+      quantity: 50000,
+      qualityScore: 88,
+    },
+    {
+      batchId: 'B-1009-F',
+      delivered: '2025-11-12',
+      expiry: '2026-02-12',
+      quantity: 5000,
+      qualityScore: 92,
+    },
+  ],
+  'Potato Starch': [
+    {
+      batchId: 'P-045A',
+      delivered: '2025-10-15',
+      expiry: '2026-01-15',
+      quantity: 12000,
+      qualityScore: 75,
+    },
+  ],
+  'Maize (for Corn Flour)': [
+    {
+      batchId: 'M-023B',
+      delivered: '2025-11-05',
+      expiry: '2026-06-05',
+      quantity: 40000,
+      qualityScore: 90,
+    },
+  ],
+  'Refined Sugar': [
+    {
+      batchId: 'S-0771',
+      delivered: '2025-09-20',
+      expiry: '2027-09-20',
+      quantity: 30000,
+      qualityScore: 99,
+    },
+  ],
+  'Vegetable Oil': [
+    {
+      batchId: 'V-004C',
+      delivered: '2025-11-08',
+      expiry: '2026-03-08',
+      quantity: 5000,
+      qualityScore: 85,
+    },
+  ],
+};
 
 // --- DATA: Batch Traceability ---
 const wheatBatches = [
@@ -644,7 +765,7 @@ function renderExpiryList() {
   });
 }
 
-// --- LIST RENDERER: Raw Materials List (Unchanged) ---
+// --- LIST RENDERER: Raw Materials List (UPDATED) ---
 function renderRawMaterialsList() {
   const container = document.getElementById('page-content-container');
   container.innerHTML = ''; // Clear
@@ -656,7 +777,11 @@ function renderRawMaterialsList() {
     let forecastClass = days_left < 7 ? 'low' : '';
 
     const itemCard = document.createElement('div');
-    itemCard.className = 'inventory-card';
+    // NEW: Added clickable-card class
+    itemCard.className = 'inventory-card clickable-card';
+    // NEW: Added data-material-name attribute
+    itemCard.setAttribute('data-material-name', material.name);
+
     itemCard.innerHTML = `
       <h3>${material.name}</h3>
       <div class="quantity-bar-container">
@@ -683,7 +808,7 @@ function renderRawMaterialsList() {
   });
 }
 
-// --- LIST RENDERER: Suppliers List (UPDATED) ---
+// --- LIST RENDERER: Suppliers List (Unchanged) ---
 function renderSupplierList(data) {
   const container = document.getElementById('supplier-list-container');
   container.innerHTML = ''; // Clear
@@ -694,8 +819,7 @@ function renderSupplierList(data) {
 
     const itemCard = document.createElement('div');
     itemCard.className = 'supplier-item';
-    
-    // Updated to include the button and detail-group
+
     itemCard.innerHTML = `
       <h3>${supplier.name}</h3>
       <div class="quantity-bar-container">
