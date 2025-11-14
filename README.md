@@ -28,3 +28,7 @@ Our inventory, weather, and demand–supply data will tell us how much quantity 
 Inventory Data + Demand Data = How much to order
 
 Weather Data = When to order
+
+
+
+...... work in Progress
