@@ -98,19 +98,49 @@ main {
   overflow-y: auto;
 }
 
-/* --- NEW: Supplier Page Styles --- */
-#page-content-container {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-
-.supplier-list-title {
+.page-title {
   font-size: 1.8em;
   font-weight: bold;
   color: #333;
   border-bottom: 2px solid #ddd;
   padding-bottom: 10px;
+  margin-top: 0;
+  margin-bottom: 20px;
+}
+
+/* --- Styles for Suppliers Page --- */
+.sub-nav-bar {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.nav-tab {
+  background: none;
+  border: none;
+  padding: 10px 20px;
+  font-size: 1.1em;
+  font-weight: 600;
+  color: #555;
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.nav-tab:hover {
+  background-color: #f0f0f0;
+}
+
+.nav-tab.active {
+  border-bottom-color: #004a99;
+  color: #004a99;
+}
+
+#supplier-list-container,
+#page-content-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 }
 
 .supplier-item {
@@ -123,45 +153,71 @@ main {
   flex-direction: column;
   gap: 15px;
 }
-
 .supplier-item h3 {
   margin: 0;
   color: #004a99;
 }
-
 .supplier-details {
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 20px;
-  flex-wrap: wrap; /* Allow wrapping on small screens */
+  flex-wrap: wrap;
 }
-
-.detail-item {
-  font-size: 1.1em;
-}
-.detail-item strong {
-  color: #555;
-}
-
 .price {
   font-size: 1.2em;
   font-weight: bold;
   color: #28a745;
 }
 
+/* --- Styles for Raw Materials Page --- */
+.inventory-card {
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+.inventory-card h3 {
+  margin: 0;
+  color: #004a99;
+}
+.card-details {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.forecast-days {
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #004a99;
+}
+.forecast-days.low {
+  color: #dc3545;
+}
+
+/* --- Shared Styles --- */
+.detail-item {
+  font-size: 1.1em;
+}
+.detail-item strong {
+  color: #555;
+}
 .quantity-bar-container {
   width: 100%;
   position: relative;
 }
-
 .quantity-bar-label {
   font-weight: bold;
   margin-bottom: 5px;
   font-size: 0.9em;
   color: #555;
 }
-
 .quantity-bar-bg {
   width: 100%;
   height: 25px;
@@ -169,17 +225,18 @@ main {
   border-radius: 5px;
   overflow: hidden;
 }
-
 .quantity-bar-fill {
   height: 100%;
-  background-color: #007bff; /* Blue fill */
+  background-color: #007bff;
   border-radius: 5px;
   transition: width 0.5s ease-out;
 }
-
+.quantity-bar-fill.low-stock {
+  background-color: #ffc107;
+}
 .quantity-bar-text {
   position: absolute;
-  top: 29px; /* Positioned just below the label */
+  top: 29px;
   left: 50%;
   transform: translateX(-50%);
   color: #000;
@@ -187,7 +244,6 @@ main {
   font-size: 0.9em;
   text-shadow: 0 0 2px #fff;
 }
-/* --- End of Supplier Styles --- */
 
 /* --- Modal Styles (Unchanged) --- */
 .modal {
@@ -272,4 +328,103 @@ main {
     opacity: 1;
     transform: translateY(0);
   }
+}
+/* --- NEW: Expiry Dashboard Alert Styles --- */
+.alert-expiring-soon {
+  border-left: 10px solid #ffc107; /* Amber/Yellow border */
+  background-color: #fffcf2;
+}
+
+.alert-expired {
+  border-left: 10px solid #dc3545; /* Red border */
+  background-color: #fff8f8;
+  animation: pulse 1.8s infinite; /* Make expired items pulse */
+}
+
+/* For the "Expired" text */
+.forecast-days.expired {
+  color: #dc3545;
+  font-weight: bold;
+}
+
+/* Re-using the pulse animation from the previous dashboard */
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  }
+  50% {
+    transform: scale(1.01);
+    box-shadow: 0 4px 10px rgba(220, 53, 69, 0.1);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  }
+/* --- NEW: Batch Traceability Styles --- */
+
+}/* New color for the route progress bar */
+
+.quantity-bar-fill.route-fill {
+  background-color: #28a745; /* Green */
+}
+
+/* New styles for status tags */
+.status-tag {
+  display: inline-block;
+  padding: 5px 12px;
+  border-radius: 15px;
+  font-size: 0.9em;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: #333;
+}
+
+.status-packing {
+  background-color: #fff3cd; /* Yellow */
+  color: #664d03;
+}
+
+.status-loading {
+  background-color: #cff4fc; /* Blue */
+  color: #055160;
+}
+
+.status-in-transit {
+  background-color: #d1e7dd; /* Green */
+  color: #0f5132;
+}
+
+/* Renamed from .quantity-bar-label to be more generic */
+.bar-label {
+  font-weight: bold;
+  margin-bottom: 5px;
+  font-size: 0.9em;
+  color: #555;
+}
+/* --- NEW: Styles for Order Inquiry Button --- */
+
+/* This new group will stack the price and delivery time */
+.detail-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px; /* Adds a small gap between price and delivery */
+}
+
+/* New button style */
+.order-inquiry-btn {
+  background-color: #004a99; /* Use brand color */
+  color: #ffffff;
+  border: none;
+  padding: 10px 15px; /* Slightly smaller than login */
+  border-radius: 5px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  align-self: center; /* Vertically align with the detail group */
+}
+
+.order-inquiry-btn:hover {
+  background-color: #003366; /* Darker hover */
 }

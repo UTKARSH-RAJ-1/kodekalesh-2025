@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
+    <meta charset="UTF-R" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Inventory Management</title>
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
     <header>
-      <h1>Inventory Management</h1>
+      <h1>📦 Inventory Management</h1>
       <nav>
         <button id="login-btn">Login</button>
       </nav>
@@ -17,21 +17,18 @@
     <nav id="sidebar">
       <img src="Logo.png" alt="Logo" id="sidebar-logo" />
       <ul>
-        <li><a href="#">Expiry Dashboard</a></li>
-        <li><a href="#">Raw Materials</a></li>
+        <li><a href="#" id="nav-expiry-dashboard" class="active">Expiry Dashboard</a></li>
+        <li><a href="#" id="nav-raw-materials">Raw Materials</a></li>
         <li><a href="#">Finished Goods</a></li>
-        <li><a href="#">Batch Traceability</a></li>
-        <li><a href="#" class="active">Suppliers</a></li>
+        <li><a href="#" id="nav-batch-traceability">Batch Traceability</a></li>
+        <li><a href="#" id="nav-suppliers">Suppliers</a></li>
         <li><a href="#">Quality Assurance</a></li>
         <li><a href="#">About</a></li>
-        </ul>
+      </ul>
     </nav>
 
-    <main>
-      <div id="page-content-container">
-        <div class="loading">Loading supplier data...</div>
-      </div>
-    </main>
+    <main id="main-content">
+      </main>
 
     <div id="login-modal" class="modal">
       <div class="modal-content">
