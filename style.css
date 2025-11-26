@@ -439,3 +439,113 @@ main {
     transform: translateY(0);
   }
 }
+/* --- NEW: Batch Traceability Styles --- */
+
+/* New color for the route progress bar */
+.quantity-bar-fill.route-fill {
+  background-color: #28a745; /* Green */
+}
+
+/* New styles for status tags */
+.status-tag {
+  display: inline-block;
+  padding: 5px 12px;
+  border-radius: 15px;
+  font-size: 0.9em;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: #333;
+}
+
+.status-packing {
+  background-color: #fff3cd; /* Yellow */
+  color: #664d03;
+}
+
+.status-loading {
+  background-color: #cff4fc; /* Blue */
+  color: #055160;
+}
+
+.status-in-transit {
+  background-color: #d1e7dd; /* Green */
+  color: #0f5132;
+}
+
+/* Renamed from .quantity-bar-label to be more generic */
+.bar-label {
+  font-weight: bold;
+  margin-bottom: 5px;
+  font-size: 0.9em;
+  color: #555;
+}
+/* --- NEW: Delay Solution Styles --- */
+
+/* This button will be blue */
+.solve-btn {
+  background-color: #004a99;
+  color: #ffffff;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 10px;
+}
+
+.solve-btn:hover {
+  background-color: #003366;
+}
+
+/* This is for the green solution box */
+.solution-box {
+  background-color: #d1e7dd; /* Light green */
+  color: #0f5132;
+  border: 1px solid #a3cfbb;
+  border-radius: 5px;
+  padding: 15px;
+  margin-top: 15px;
+}
+
+/* This makes the delay reason stand out */
+.delay-reason {
+  color: #dc3545; /* Red */
+  font-weight: bold;
+}
+/* --- NEW: Delay Solution Styles --- */
+
+/* This button will be blue */
+.solve-btn {
+  background-color: #004a99;
+  color: #ffffff;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 10px;
+}
+
+.solve-btn:hover {
+  background-color: #003366;
+}
+
+/* This is for the green solution box */
+.solution-box {
+  background-color: #d1e7dd; /* Light green */
+  color: #0f5132;
+  border: 1px solid #a3cfbb;
+  border-radius: 5px;
+  padding: 15px;
+  margin-top: 15px;
+}
+
+/* This makes the delay reason stand out */
+.delay-reason {
+  color: #dc3545; /* Red */
+  font-weight: bold;
+}
