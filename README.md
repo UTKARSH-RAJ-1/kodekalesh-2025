@@ -31,4 +31,42 @@ Weather Data = When to order
 
 
 
+
+inventory-management-system/
+├── frontend/
+│   ├── index.html
+│   ├── css/
+│   │   └── style.css
+│   ├── js/
+│   │   ├── app.js
+│   │   ├── auth.js
+│   │   ├── api.js
+│   │   └── charts.js
+│   └── assets/
+├── backend/
+│   ├── server.js
+│   ├── config/
+│   │   └── db.js
+│   ├── models/
+│   │   ├── User.js
+│   │   ├── Inventory.js
+│   │   ├── Batch.js
+│   │   ├── Supplier.js
+│   │   └── Order.js
+│   ├── routes/
+│   │   ├── auth.js
+│   │   ├── inventory.js
+│   │   ├── batches.js
+│   │   ├── suppliers.js
+│   │   └── weather.js
+│   ├── middleware/
+│   │   └── auth.js
+│   └── services/
+│       └── weatherService.js
+├── package.json
+└── .env
+
+
+
+
 ...... work in Progress
