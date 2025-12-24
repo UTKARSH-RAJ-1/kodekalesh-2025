@@ -385,3 +385,22 @@ th {
 .delay-reason {
   color: #f85149;
 }
+
+.production-action-btn {
+  padding: 8px 16px;
+  background: linear-gradient(135deg, var(--success-color), #2ea043);
+  border: none;
+  border-radius: 6px;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  font-size: 0.9rem;
+}
+
+.production-action-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(46, 160, 67, 0.4);
+  opacity: 0.95;
+}

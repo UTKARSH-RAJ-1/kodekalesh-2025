@@ -34,6 +34,7 @@ export async function renderDashboardPage() {
             <h3>Live Alerts</h3>
             <ul id="alert-list" class="alert-list">Loading alerts...</ul>
         </div>
+
     `;
 
   // 1. Fetch Data
@@ -221,9 +222,9 @@ function renderAlerts(alerts) {
   alerts.forEach(alert => {
     const li = document.createElement('li');
     li.innerHTML = `
-            <span style="color: #d29922;">⚠️ ${alert.alertType}</span>
-            <span>${alert.message}</span>
-        `;
+    <span style="color: #d29922;">⚠️ ${alert.alertType}</span>
+      <span>${alert.message}</span>
+  `;
     list.appendChild(li);
   });
 }
@@ -234,9 +235,9 @@ export async function renderRawMaterialsPage() {
   const mainContent = document.getElementById('content-area');
   mainContent.innerHTML = `
     <h2 class="page-title">Raw Materials Inventory</h2>
-    <div id="page-content-container">
-      <p class="loading">Loading raw materials...</p>
-    </div>
+      <div id="page-content-container">
+        <p class="loading">Loading raw materials...</p>
+      </div>
   `;
 
   const container = mainContent.querySelector('#page-content-container');
@@ -268,7 +269,7 @@ async function renderRawMaterialsList() {
     itemCard.setAttribute('data-material-name', material.name);
 
     itemCard.innerHTML = `
-      <h3>${material.name}</h3>
+    <h3>${material.name}</h3>
       <div class="quantity-bar-container">
         <p class="bar-label">Stock Level:</p>
         <div class="quantity-bar-bg">
@@ -282,7 +283,7 @@ async function renderRawMaterialsList() {
           <strong>~${days_left.toFixed(1)} days of production left</strong>
         </div>
       </div>
-    `;
+  `;
     container.appendChild(itemCard);
   });
 }
@@ -299,7 +300,7 @@ async function renderBatchDetailPage(materialName) {
   if (batches.length > 0) {
     batches.forEach((batch) => {
       batchCardsHTML += `
-        <div class="inventory-card glass-card">
+    <div class="inventory-card glass-card">
           <h3>Batch: ${batch.batchId}</h3>
           <div class="card-details">
             <div class="detail-item"><strong>Delivered:</strong> ${batch.delivered}</div>
@@ -314,7 +315,7 @@ async function renderBatchDetailPage(materialName) {
             <div class="quantity-bar-text">${batch.qualityScore} / 100</div>
           </div>
         </div>
-      `;
+    `;
     });
   } else {
     batchCardsHTML = '<p>No batch information available for this material.</p>';
@@ -391,7 +392,7 @@ async function renderBatchList(material) {
     itemCard.setAttribute('data-batch-id', batch.batchId);
 
     itemCard.innerHTML = `
-      <h3>${batch.productName} (Batch: ${batch.batchId})</h3>
+    <h3>${batch.productName} (Batch: ${batch.batchId})</h3>
       <div class="card-details">
         <div class="detail-item"><strong>Supplier:</strong> ${batch.supplierName}</div>
         <div class="detail-item">
@@ -406,7 +407,7 @@ async function renderBatchList(material) {
         <div class="quantity-bar-text">${batch.coveredRoute} km / ${batch.totalRoute} km</div>
       </div>
       ${batch.delayReason ? `<div class="detail-item delay-reason" style="margin-top: 10px;"><strong>Delay:</strong> ${batch.delayReason}</div>` : ''}
-    `;
+  `;
     container.appendChild(itemCard);
   });
 }
@@ -421,7 +422,7 @@ async function renderTraceDetailPage(batchId) {
     const statusClass = batch.status.toLowerCase().replace(' ', '-');
 
     mainContent.innerHTML = `
-      <button id="back-to-trace" class="back-btn">← Back to All Batches</button>
+    <button id="back-to-trace" class="back-btn">← Back to All Batches</button>
       <h2 class="page-title">Details for Batch: ${batch.batchId}</h2>
       
       <div class="inventory-card glass-card">
@@ -460,7 +461,7 @@ async function renderTraceDetailPage(batchId) {
             `
       }
       </div>
-    `;
+  `;
 
     document.getElementById('back-to-trace').addEventListener('click', renderBatchTraceabilityPage);
 
@@ -469,11 +470,11 @@ async function renderTraceDetailPage(batchId) {
       solveBtn.addEventListener('click', () => {
         const solutionContainer = document.getElementById('solution-container');
         solutionContainer.innerHTML = `
-          <div class="solution-box glass-card">
+    <div class="solution-box glass-card">
             <strong>Suggested Solution:</strong>
             <p>${batch.solution || 'No specific solution available. Escalate to manager.'}</p>
           </div>
-        `;
+    `;
         solutionContainer.style.display = 'block';
         solveBtn.style.display = 'none';
       });
@@ -536,7 +537,7 @@ async function renderSupplierList(material) {
     itemCard.className = 'supplier-item glass-card';
 
     itemCard.innerHTML = `
-      <h3>${supplier.name}</h3>
+    <h3>${supplier.name}</h3>
       <div class="quantity-bar-container">
         <p class="bar-label">Supply Open for Sale:</p>
         <div class="quantity-bar-bg">
@@ -555,7 +556,371 @@ async function renderSupplierList(material) {
         </div>
         <button class="order-inquiry-btn">Order Inquiry</button>
       </div>
-    `;
+  `;
     container.appendChild(itemCard);
   });
+}
+
+// --- PAGE RENDERER: Finished Goods ---
+// --- PAGE RENDERER: Finished Goods ---
+export async function renderFinishedGoodsPage() {
+  const mainContent = document.getElementById('content-area');
+  mainContent.innerHTML = `
+    <div class="header-actions">
+          <h2 class="page-title">Finished Goods Inventory</h2>
+          <input type="text" id="fg-search" class="glass-input" style="width: 300px; margin: 0;" placeholder="Search products...">
+      </div>
+      <div id="finished-goods-container" class="dashboard-grid">
+        <p class="loading">Loading finished goods...</p>
+      </div>
+  `;
+
+  const container = mainContent.querySelector('#finished-goods-container');
+  const searchInput = mainContent.querySelector('#fg-search');
+
+  // Fetch Data
+  const allData = await API.fetchFinishedGoods();
+
+  // Render Function
+  const render = (items) => {
+    container.innerHTML = '';
+    if (!items || items.length === 0) {
+      container.innerHTML = '<p>No finished goods found matching your search.</p>';
+      return;
+    }
+
+    items.forEach((item) => {
+      const percentStock = (item.current_stock / item.max_stock) * 100;
+
+      // Styles
+      let demandClass = 'demand-medium';
+      if (item.market_demand.includes('High') || item.market_demand.includes('Very High')) demandClass = 'demand-high';
+      if (item.market_demand.includes('Low')) demandClass = 'demand-low';
+
+      let stockClass = '';
+      if (percentStock < 20) stockClass = 'low-stock';
+      if (percentStock > 90) stockClass = 'over-stock';
+
+      const itemCard = document.createElement('div');
+      itemCard.className = 'inventory-card glass-card';
+      itemCard.setAttribute('data-id', item.id);
+
+      itemCard.innerHTML = `
+    <div class="card-header-flex">
+                    <h3 style="margin:0">${item.name}</h3>
+                    <span class="sku-tag" style="font-size: 0.8em; opacity: 0.7;">${item.sku}</span>
+                </div>
+                
+                <div class="metric-row" style="margin: 15px 0;">
+                    <div class="metric-item">
+                        <span class="metric-label">Market Demand</span>
+                        <span class="metric-value ${demandClass}">${item.market_demand}</span>
+                    </div>
+                    <div class="metric-item ai-prediction">
+                        <span class="metric-label">🤖 AI Prediction</span>
+                        <span class="metric-value highlight-ai">${item.predicted_production_need.toLocaleString()} units</span>
+                    </div>
+                </div>
+
+                <div class="quantity-bar-container">
+                    <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
+                        <span class="bar-label">Current Stock</span>
+                        <span class="bar-label" style="color: ${stockClass === 'low-stock' ? '#f85149' : 'inherit'}">${item.status}</span>
+                    </div>
+                    <div class="quantity-bar-bg">
+                        <div class="quantity-bar-fill ${stockClass}" style="width: ${percentStock}%;"></div>
+                    </div>
+                    <div class="quantity-bar-text" style="text-align:right; margin-top:4px;">
+                        ${item.current_stock.toLocaleString()} / ${item.max_stock.toLocaleString()}
+                    </div>
+                </div>
+
+                <div class="card-footer-flex" style="margin-top: 15px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 10px;">
+                    <span class="price-tag" style="font-weight: bold; color: var(--success-color);">₹${item.unit_price.toFixed(2)}</span>
+                    <button class="production-action-btn production-btn" data-name="${item.name}">Plan Production</button>
+                </div>
+  `;
+      container.appendChild(itemCard);
+    });
+  };
+
+  // Initial Render
+  render(allData);
+
+  // Search Interaction
+  searchInput.addEventListener('input', (e) => {
+    const term = e.target.value.toLowerCase();
+    const filtered = allData.filter(item =>
+      item.name.toLowerCase().includes(term) ||
+      item.sku.toLowerCase().includes(term)
+    );
+    render(filtered);
+  });
+
+  // Button Interaction (Delegation)
+  container.addEventListener('click', (e) => {
+    if (e.target.classList.contains('production-btn')) {
+      const productName = e.target.getAttribute('data-name');
+      showToast(`Production plan initiated for ${productName}`, 'success');
+    }
+  });
+}
+
+// --- PAGE RENDERER: Quality Assurance ---
+export async function renderQAPage() {
+  const mainContent = document.getElementById('content-area');
+  mainContent.innerHTML = `
+    <h2 class="page-title">Quality Assurance Dashboard</h2>
+      
+      <!--Section 1: Incoming Quality Overview-->
+      <div class="card glass-card" style="margin-bottom: 25px;">
+        <h3>Incoming Material Quality Scores (Last 30 Days)</h3>
+        <div style="height: 300px;">
+            <canvas id="qaChart"></canvas>
+        </div>
+      </div>
+
+      <!--Section 2: Quality Incidents Log-->
+    <div class="dashboard-grid" style="margin-bottom: 25px; grid-template-columns: 2fr 1fr;">
+      <div class="card glass-card">
+        <div class="card-header-flex">
+          <h3>Quality Incidents Log</h3>
+          <input type="text" id="incident-search" class="glass-input" style="width: 200px; margin:0;" placeholder="Search incidents...">
+        </div>
+        <div class="table-container" style="max-height: 300px; overflow-y: auto;">
+          <table id="incidents-table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Issue</th>
+                <th>Severity</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="incidents-body">
+              <tr><td colspan="4" class="loading">Loading incidents...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Section 3: Compliance Status -->
+      <div class="card glass-card">
+        <h3>Supplier Compliance Tracker</h3>
+        <div id="compliance-container" style="display: flex; flex-direction: column; gap: 15px; margin-top: 15px;">
+          <p class="loading">Loading compliance data...</p>
+        </div>
+      </div>
+    </div>
+  `;
+
+  // 1. Render Chart (Incoming Quality)
+  const renderQualityChart = async () => {
+    const rawMaterialBatches = await API.fetchRawMaterialBatches();
+    const labels = Object.keys(rawMaterialBatches);
+    const avgScores = labels.map(material => {
+      const batches = rawMaterialBatches[material];
+      if (!batches || batches.length === 0) return 0;
+      const sum = batches.reduce((acc, b) => acc + b.qualityScore, 0);
+      return (sum / batches.length).toFixed(1);
+    });
+
+    const ctxQA = document.getElementById('qaChart').getContext('2d');
+    new Chart(ctxQA, {
+      type: 'bar',
+      data: {
+        labels: labels.map(l => l.charAt(0).toUpperCase() + l.slice(1)),
+        datasets: [{
+          label: 'Avg Quality Score',
+          data: avgScores,
+          backgroundColor: avgScores.map(s => s >= 90 ? '#2ea043' : (s >= 80 ? '#d29922' : '#f85149')),
+          borderColor: 'rgba(255,255,255,0.1)',
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          y: { beginAtZero: true, max: 100, grid: { color: 'rgba(255,255,255,0.1)' }, ticks: { color: '#8b949e' } },
+          x: { grid: { display: false }, ticks: { color: '#8b949e' } }
+        },
+        plugins: {
+          legend: { display: false }
+        }
+      }
+    });
+  };
+
+  // 2. Render Incidents Table
+  const renderIncidents = async () => {
+    const incidents = await API.fetchQualityIncidents();
+    const tbody = document.getElementById('incidents-body');
+    const searchInput = document.getElementById('incident-search');
+
+    const populateTable = (items) => {
+      tbody.innerHTML = '';
+      if (items.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="4">No incidents found.</td></tr>';
+        return;
+      }
+      items.forEach(inc => {
+        let badgeClass = 'status-default';
+        if (inc.severity === 'High') badgeClass = 'status-delayed'; // Red
+        if (inc.severity === 'Medium') badgeClass = 'status-transit'; // Orange
+        if (inc.severity === 'Low') badgeClass = 'status-delivered'; // Green
+
+        const row = document.createElement('tr');
+        row.innerHTML = `
+    <td>${inc.date}</td>
+                    <td>
+                        <div style="font-weight:bold;">${inc.type}</div>
+                        <div style="font-size:0.85em; opacity:0.7;">${inc.details}</div>
+                    </td>
+                    <td><span class="status-tag ${badgeClass}">${inc.severity}</span></td>
+                    <td>${inc.status}</td>
+  `;
+        tbody.appendChild(row);
+      });
+    };
+
+    populateTable(incidents);
+
+    searchInput.addEventListener('input', (e) => {
+      const term = e.target.value.toLowerCase();
+      const filtered = incidents.filter(i =>
+        i.type.toLowerCase().includes(term) ||
+        i.details.toLowerCase().includes(term)
+      );
+      populateTable(filtered);
+    });
+  };
+
+  // 3. Render Compliance Tracker
+  const renderCompliance = async () => {
+    const certs = await API.fetchComplianceData();
+    const container = document.getElementById('compliance-container');
+    container.innerHTML = '';
+
+    certs.forEach(cert => {
+      let statusColor = '#2ea043'; // Valid
+      if (cert.status === 'Expiring Soon') statusColor = '#d29922';
+      if (cert.status === 'Expired') statusColor = '#f85149';
+
+      const card = document.createElement('div');
+      card.style.padding = '12px';
+      card.style.background = 'rgba(255,255,255,0.05)';
+      card.style.borderRadius = '8px';
+      card.style.borderLeft = `4px solid ${statusColor} `;
+
+      card.innerHTML = `
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:5px;">
+                    <span style="font-weight:600; font-size:0.95em;">${cert.name}</span>
+                    <span style="font-size:0.8em; color:${statusColor}; border:1px solid ${statusColor}; padding:2px 6px; border-radius:4px;">${cert.status}</span>
+                </div>
+                <div style="font-size:0.85em; color:#8b949e; margin-bottom:2px;">Supplier: ${cert.supplier}</div>
+                <div style="font-size:0.8em;">Expires: ${cert.expiry}</div>
+  `;
+      container.appendChild(card);
+    });
+  };
+
+  // Execute all renderers
+  await Promise.all([renderQualityChart(), renderIncidents(), renderCompliance()]);
+}
+
+// --- PAGE RENDERER: About ---
+export function renderAboutPage() {
+  const mainContent = document.getElementById('content-area');
+
+  mainContent.innerHTML = `
+    <div style="max-width: 900px; margin: 0 auto; animation: fadeIn 0.5s ease;">
+        <!--Hero Section-->
+        <div class="card glass-card" style="text-align: center; padding: 40px; margin-bottom: 30px; background: linear-gradient(135deg, rgba(88, 166, 255, 0.1), rgba(22, 27, 34, 0.6)); border: 1px solid var(--primary-color);">
+            <div style="font-size: 3rem; margin-bottom: 10px;">🌐</div>
+            <h1 style="color: var(--primary-color); margin-bottom: 15px;">Smart Inventory Management 2.0</h1>
+            <p style="font-size: 1.2rem; color: var(--text-color); opacity: 0.9;">Solving the volatility of modern supply chains through data transparency and AI.</p>
+        </div>
+
+        <!--Problem Statement-->
+        <div class="card glass-card" style="margin-bottom: 30px; border-left: 4px solid var(--danger-color);">
+            <h3 style="color: var(--danger-color); margin-bottom: 15px;">The Challenge</h3>
+            <p style="line-height: 1.8; font-size: 1.05rem; opacity: 0.85;">
+                Large-scale supply chains operate as sprawling networks with volatile dependencies, where minor disruptions—logistical delays, demand fluctuations, or supplier inconsistencies—can propagate unpredictably. 
+                Industries often lack the ability to anticipate these perturbations due to <strong>opaque data flows</strong> and <strong>poor synchrony</strong> between nodes. 
+                This results in inventory mismatches, operational downtime, and significant financial inefficiencies.
+            </p>
+        </div>
+
+        <h2 style="margin: 40px 0 20px; text-align: center;">How SIM 2.0 Solves It</h2>
+
+        <div class="dashboard-grid" style="grid-template-columns: repeat(2, 1fr); gap: 20px;">
+            
+            <!-- Solution 1: Visibility -->
+            <div class="card glass-card">
+                <div style="display: flex; gap: 15px; align-items: start;">
+                    <span style="font-size: 2rem; background: rgba(88, 166, 255, 0.1); padding: 10px; border-radius: 12px;">👁️</span>
+                    <div>
+                        <h3 style="margin-bottom: 10px;">Eliminating Opacity</h3>
+                        <p style="font-size: 0.95rem; opacity: 0.7;">
+                            <strong>Feature: Batch Traceability & Live Dashboard</strong><br>
+                            We replace opaque data flows with granular, real-time tracking of every node. From raw material arrival to finished goods, users have 100% visibility into stock levels and locations.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Solution 2: Synchrony -->
+            <div class="card glass-card">
+                <div style="display: flex; gap: 15px; align-items: start;">
+                    <span style="font-size: 2rem; background: rgba(46, 160, 67, 0.1); padding: 10px; border-radius: 12px;">🤖</span>
+                    <div>
+                        <h3 style="margin-bottom: 10px;">Predictive Synchrony</h3>
+                        <p style="font-size: 0.95rem; opacity: 0.7;">
+                            <strong>Feature: AI Demand Prediction</strong><br>
+                            Instead of reacting to mismatches, our AI analyzes market trends to forecast manufacturing needs (e.g., "Predicted Need: 2400 units"), aligning production perfectly with demand.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Solution 3: Resilience -->
+            <div class="card glass-card">
+                <div style="display: flex; gap: 15px; align-items: start;">
+                    <span style="font-size: 2rem; background: rgba(210, 153, 34, 0.1); padding: 10px; border-radius: 12px;">🛡️</span>
+                    <div>
+                        <h3 style="margin-bottom: 10px;">Anticipating Disruptions</h3>
+                        <p style="font-size: 0.95rem; opacity: 0.7;">
+                            <strong>Feature: Weather Alerts & QA Logs</strong><br>
+                            We mitigate operational downtime by providing early warnings for external threats (Weather) and internal quality failures (Incidents Log), allowing for proactive resolution.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Solution 4: Efficiency -->
+            <div class="card glass-card">
+                <div style="display: flex; gap: 15px; align-items: start;">
+                    <span style="font-size: 2rem; background: rgba(248, 81, 73, 0.1); padding: 10px; border-radius: 12px;">📉</span>
+                    <div>
+                        <h3 style="margin-bottom: 10px;">Financial Optimization</h3>
+                        <p style="font-size: 0.95rem; opacity: 0.7;">
+                            <strong>Feature: Expiry & Compliance Tracking</strong><br>
+                            By tracking expiry dates and supplier compliance certificates, we drastically reduce waste and prevent costly regulatory fines, solving financial inefficiencies.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div style="text-align: center; margin-top: 50px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1);">
+            <p style="font-size: 1.1rem; font-weight: 600; color: var(--primary-color); margin-bottom: 5px;">Developed by Team Autominds 🚀</p>
+            <p style="font-size: 0.95rem; opacity: 0.9;">
+                📧 <a href="mailto:autominds1024@gmail.com" style="color: var(--text-color); text-decoration: none; border-bottom: 1px dashed var(--text-color);">autominds1024@gmail.com</a>
+            </p>
+            <p style="font-size: 0.8rem; opacity: 0.5; margin-top: 20px;">KodeKalesh 2025 Hackathon Project • Version 2.0</p>
+        </div>
+      </div >
+    `;
 }

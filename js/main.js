@@ -101,11 +101,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 case 'brm': UI.renderRawMaterialsPage(); break;
                 case 'traceability': UI.renderBatchTraceabilityPage(); break;
                 case 'suppliers': UI.renderSuppliersPage(); break;
-                case 'bfg': // Fallthrough or placeholder
-                case 'qa':
-                case 'about':
-                    document.getElementById('content-area').innerHTML = '<div class="card glass-card"><h3>Coming Soon</h3><p>This module is under development.</p></div>';
-                    break;
+                case 'bfg': UI.renderFinishedGoodsPage(); break;
+                case 'qa': UI.renderQAPage(); break;
+                case 'about': UI.renderAboutPage(); break;
                 default:
                     UI.renderDashboardPage();
             }
