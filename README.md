@@ -116,15 +116,25 @@ kodekalesh-2025/
 ├── backend/                # API Logic
 │   ├── config/             # DB & Data Config
 │   ├── controllers/        # Request Handlers
+│   ├── middleware/         # Custom Middleware
 │   ├── models/             # Sequelize Models
 │   ├── routes/             # API Endpoints
-│   └── services/           # External Integrations (Weather)
-├── frontend/               # User Interface
-│   ├── css/                # Glassmorphism Styles
-│   ├── js/                 # App Logic (Chart, API, UI)
-│   └── index.html          # Main Entry Point
+│   ├── scripts/            # Utility Scripts
+│   ├── services/           # External Integrations (Weather)
+│   └── server.js           # Server Entry Point
+├── js/                     # Frontend Logic (Modules)
+│   ├── api.js              # API Communication
+│   ├── main.js             # Main App Logic
+│   ├── toast.js            # Notification Logic
+│   ├── ui.js               # UI Manipulation
+│   └── utils.js            # Helper Functions
 ├── tests/                  # Automated Tests
-└── .eslintrc.json          # Linting Rules
+│   └── api.test.js
+├── index.html              # Main User Interface
+├── style.css               # Global Styles
+├── database.sqlite         # SQLite Database
+├── .eslintrc.json          # Linting Config
+└── package.json            # Dependencies & Scripts
 ```
 
 
