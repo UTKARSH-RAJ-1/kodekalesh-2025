@@ -1,23 +1,11 @@
-const express = require('express');
-const cors = require('cors');
-const path = require('path');
-const app = express();
-const PORT = 3000;
+// --- MOCK DATABASE (DATA STORAGE) ---
 
-// --- 1. MIDDLEWARE SETUP ---
-app.use(cors()); // Allow requests from other origins (if needed)
-app.use(express.json()); // Parse JSON bodies
-app.use(express.static(__dirname)); // Serve HTML/CSS/JS files automatically
-
-// --- 2. HELPER FUNCTIONS ---
-// Generates a date string (YYYY-MM-DD) for "X days from now"
+// Helper function needed for data generation
 function getFutureDate(daysToAdd) {
   const today = new Date();
   today.setDate(today.getDate() + daysToAdd);
   return today.toISOString().split('T')[0];
 }
-
-// --- 3. MOCK DATABASE (DATA STORAGE) ---
 
 // > Data: Expiry Dashboard
 const expiryData = [
@@ -271,65 +259,16 @@ const maizeSupplierData = [
   { name: 'Rajasthan Arid Crops', quantity: 60000, max_quantity: 60000, price: 21.5, delivery_time: 4 },
 ];
 
-// --- 4. API ROUTES ---
-
-// Route: Get Expiry Data
-app.get('/api/expiry', (req, res) => {
-  res.json(expiryData);
-});
-
-// Route: Get Raw Materials List
-app.get('/api/raw-materials', (req, res) => {
-  res.json(rawMaterialData);
-});
-
-// Route: Get All Batch Details for Raw Materials
-app.get('/api/raw-materials/batches', (req, res) => {
-  res.json(rawMaterialBatches);
-});
-
-// Route: Get Traceability List (Filtered by Material)
-app.get('/api/traceability', (req, res) => {
-  const material = req.query.material;
-  if (material === 'wheat') {
-    res.json(wheatBatches);
-  } else if (material === 'potato') {
-    res.json(potatoBatches);
-  } else if (material === 'maize') {
-    res.json(maizeBatches);
-  } else {
-    res.status(400).json({ error: 'Invalid material parameter' });
-  }
-});
-
-// Route: Get Single Batch Details (For Delay/Solution Page)
-app.get('/api/traceability/batch/:id', (req, res) => {
-  const { id } = req.params;
-  const batch = allTraceabilityBatches.find((b) => b.batchId === id);
-  
-  if (batch) {
-    res.json(batch);
-  } else {
-    res.status(404).json({ error: 'Batch not found' });
-  }
-});
-
-// Route: Get Suppliers (Filtered by Material)
-app.get('/api/suppliers', (req, res) => {
-  const material = req.query.material;
-  if (material === 'wheat') {
-    res.json(wheatSupplierData);
-  } else if (material === 'potato') {
-    res.json(potatoSupplierData);
-  } else if (material === 'maize') {
-    res.json(maizeSupplierData);
-  } else {
-    res.status(400).json({ error: 'Invalid material parameter' });
-  }
-});
-
-// --- 5. START SERVER ---
-app.listen(PORT, () => {
-  console.log(`✅ Inventory Server is running!`);
-  console.log(`👉 Open your browser to: http://localhost:${PORT}`);
-});
+// Export all data
+module.exports = {
+  expiryData,
+  rawMaterialData,
+  rawMaterialBatches,
+  wheatBatches,
+  potatoBatches,
+  maizeBatches,
+  allTraceabilityBatches,
+  wheatSupplierData,
+  potatoSupplierData,
+  maizeSupplierData
+};

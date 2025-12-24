@@ -1,0 +1,8 @@
+node_modules
+.env
+database.sqlite
+coverage/
+.DS_Store
+Latest_Frontend_Build/
+.system_generated/
+*.log

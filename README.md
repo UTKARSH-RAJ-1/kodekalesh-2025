@@ -1,4 +1,6 @@
 # kodekalesh-2025
+
+# SIM 1.0
 Working on Problem statement 7 of kodekalesh-2025 final round
 Delays
 
@@ -70,3 +72,59 @@ inventory-management-system/
 
 
 ...... work in Progress
+
+
+
+# SIM 2.0 (Upgraded Smart Inventory Management)
+
+A major upgrade focusing on a modular architecture, enhanced durability, premium user experience, and smart analytics.
+
+## Key Upgrades
+
+### 1. Modernized Architecture
+-   **Frontend/Backend Separation**: Clean separation of concerns with a dedicated `backend/` (Express.js API) and `frontend/` (Vanilla JS modules).
+-   **MVC Pattern**: Backend organized into Models, Views (API responses), and Controllers for scalable logic.
+-   **ES Modules**: Frontend uses modern ES6 modules (`import`/`export`) for better code organization and maintainability.
+
+### 2. Premium UI/UX
+-   **Glassmorphism Design**: A visually stunning interface featuring semi-transparent cards, blur effects, and vibrant gradients.
+-   **Theme Toggle**: Fully functional **Dark/Light Mode** switcher that persists user preference.
+-   **Interactive Dashboard**:
+    -   **Inventory Health Chart**: Switchable views (Overview 📊, By Material 📝, Timeline 📅).
+    -   **Stock Visualization**: Real-time bar charts for raw material levels.
+    -   **Toast Notifications**: Non-intrusive, auto-dismissing alerts for user actions (Login, Orders).
+
+### 3. Smart Inventory Features
+-   **Weather Integration**: Real-time connection to **Open-Meteo API** to predict fog and weather delays.
+-   **Expiry Tracking**: Automated tracking of batch expiry dates with visual alerts (Green/Red indicators).
+-   **Batch Traceability**: Full lifecycle tracking of batches (Supplier -> Transit -> Warehouse) with "Solve Delay" suggestions.
+-   **Supplier Marketplace**: Interface to view supplier stock, prices, and delivery times, with one-click "Order Inquiry".
+
+### 4. Robust Security & Quality
+-   **Authentication**: JWT-based secure login system (`admin` / `admin123`).
+-   **Data Integrity**: **SQLite** database with **Sequelize ORM** for reliable data storage and relationships.
+-   **Code Quality**: Integrated **ESLint** for code standardization and **Jest** for automated API testing.
+
+## Tech Stack
+-   **Backend**: Node.js, Express.js, SQLite, Sequelize, JSON Web Tokens (JWT).
+-   **Frontend**: HTML5, CSS3 (Variables & Glassmorphism), Vanilla JavaScript (ES6+), Chart.js.
+-   **External**: Open-Meteo Weather API.
+
+## Project Structure
+```
+kodekalesh-2025/
+├── backend/                # API Logic
+│   ├── config/             # DB & Data Config
+│   ├── controllers/        # Request Handlers
+│   ├── models/             # Sequelize Models
+│   ├── routes/             # API Endpoints
+│   └── services/           # External Integrations (Weather)
+├── frontend/               # User Interface
+│   ├── css/                # Glassmorphism Styles
+│   ├── js/                 # App Logic (Chart, API, UI)
+│   └── index.html          # Main Entry Point
+├── tests/                  # Automated Tests
+└── .eslintrc.json          # Linting Rules
+```
+
+

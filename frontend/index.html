@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Inventory Management</title>
+  <!-- Google Fonts: Inter -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+  <!-- Toast Container -->
+  <div id="toast-container"></div>
+
+  <div class="app-container">
+    <!-- Sidebar -->
+    <aside class="sidebarガラス">
+      <div class="logo">
+        <img src="https://cdn-icons-png.flaticon.com/512/2821/2821898.png" alt="Logo">
+        <span>Smart Inventory Management</span>
+      </div>
+      <nav>
+        <ul>
+          <li data-target="dashboard" class="active">Expiry Dashboard</li>
+          <li data-target="brm">Raw Materials</li>
+          <li data-target="bfg">Finished Goods</li>
+          <li data-target="traceability">Batch Traceability</li>
+          <li data-target="suppliers">Suppliers</li>
+          <li data-target="qa">Quality Assurance</li>
+          <li data-target="about">About</li>
+        </ul>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <header>
+        <h1 id="page-title">Dashboard</h1>
+        <div class="header-actions">
+          <button id="theme-toggle" class="glass-btn" aria-label="Toggle Theme">🌙/☀️</button>
+          <button id="login-btn" class="glass-btn">Login</button>
+        </div>
+      </header>
+
+      <div id="content-area">
+        <!-- Dashboard Content with Charts -->
+        <div class="dashboard-grid">
+          <div class="card glass-card">
+            <h3>Raw Material Stock</h3>
+            <canvas id="stockChart"></canvas>
+          </div>
+          <div class="card glass-card">
+            <h3>Inventory Health</h3>
+            <canvas id="healthChart"></canvas>
+          </div>
+        </div>
+
+        <div id="alerts-section" class="card glass-card" style="margin-top: 20px;">
+          <h3>Live Alerts</h3>
+          <ul id="alert-list">Loading alerts...</ul>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Login Modal -->
+  <div id="login-modal" class="modal hidden">
+    <div class="modal-content glass-card">
+      <span class="close-btn">&times;</span>
+      <h2>Login</h2>
+      <form id="login-form">
+        <label>Username:</label>
+        <input type="text" id="username" required class="glass-input">
+        <label>Password:</label>
+        <input type="password" id="password" required class="glass-input">
+        <button type="submit" class="submit-btn glass-btn-primary">Login</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Script Modules -->
+  <script type="module" src="js/main.js"></script>
+</body>
+
+</html>

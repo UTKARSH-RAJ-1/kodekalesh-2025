@@ -2,9 +2,11 @@
   "name": "kodekalesh_autominds",
   "version": "1.0.0",
   "description": "",
-  "main": "script.js",
+  "main": "backend/server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node backend/server.js",
+    "lint": "eslint .",
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -19,7 +21,16 @@
   },
   "homepage": "https://github.com/UTKARSH-RAJ-1/KodeKalesh_Autominds#readme",
   "dependencies": {
+    "axios": "^1.13.2",
+    "bcrypt": "^6.0.0",
     "cors": "^2.8.5",
-    "express": "^5.1.0"
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.3",
+    "sequelize": "^6.37.7",
+    "sqlite3": "^5.1.7"
+  },
+  "devDependencies": {
+    "jest": "^30.2.0",
+    "supertest": "^7.1.4"
   }
 }
