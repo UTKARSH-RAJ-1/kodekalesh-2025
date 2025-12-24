@@ -16,8 +16,17 @@ const weatherRoutes = require('./routes/weatherRoutes');
 app.use(cors()); // Allow requests from other origins
 app.use(express.json()); // Parse JSON bodies
 
-// Serve static frontend files from the 'frontend' directory
-app.use(express.static(path.join(__dirname, '../frontend')));
+// Serve static frontend files from the root directory safely
+app.get('/style.css', (req, res) => {
+    res.sendFile(path.join(__dirname, '../style.css'));
+});
+app.use('/js', express.static(path.join(__dirname, '../js')));
+app.use('/assets', express.static(path.join(__dirname, '../assets')));
+
+// Serve index.html for the root route
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, '../index.html'));
+});
 
 // --- 2. API ROUTES ---
 console.log('Mounting Inventory Routes...');
