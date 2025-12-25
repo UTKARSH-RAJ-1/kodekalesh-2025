@@ -2,6 +2,9 @@
 
 # SIM 1.0
 Working on Problem statement 7 of kodekalesh-2025 final round
+Problem : Large-scale supply chains operate as sprawling networks with volatile dependencies, where minor disruptions—logistical delays, demand fluctuations, or supplier inconsistencies—can propagate unpredictably. Industries often lack the ability to anticipate these perturbations due to opaque data flows and poor synchrony between nodes. This results in inventory mismatches, operational downtime, and significant financial inefficiencies.
+
+
 Delays
 
 Weather Delay
